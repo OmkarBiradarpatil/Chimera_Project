@@ -1,4 +1,4 @@
-﻿# 🧬 Chimera — AI Evidence Intelligence Platform
+# 🧬 Chimera — AI Evidence Intelligence Platform
 
 <div align="center">
 
@@ -234,6 +234,6 @@ Demonstration / hackathon project. Do not use with real PII data.
 ---
 
 <div align="center">
-  <strong>Built with 🔮 by Omkar Biradar Patil</strong><br/>
+  <strong>Built with 🔮 by <a href="https://github.com/OmkarBiradarpatil">Omkar Biradar Patil</a> &amp; Sharan Sanadi</strong><br/>
   <em>Chimera — Where raw evidence becomes structured intelligence</em>
 </div>
