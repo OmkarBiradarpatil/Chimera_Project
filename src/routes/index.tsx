@@ -1540,7 +1540,7 @@ function LandingPage() {
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
-                <img alt="The First Spark" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAP2DTslGeIz-d00rhi0RYBuPiyoXqPrJVXdAnfedfkWQV_EH6Is_werEjWH5BZZsY7OW9cSHBxx7suxpXLHwDO34LlMJDQ4AhiENhj0kU_-BJsIfXOXXWFtpmqL6pU49fKCK-IsZrHIxIXafxKIm7i6UOI-lHG1OSKt9Rmr15asNlxxjes4y2mgdVwbrd_D3iiTq1itDnMVmnk7wHPZA7iKeD6j6Dp18Le5T_KGgL87uK9ZcEsl6_eaUnCDyuPTynktJLHWfae3YQ" />
+                <img alt="The First Spark — Evidence Ingestion" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" src="/phase01.png" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111319] to-transparent"></div>
                 <div className="absolute bottom-6 left-6">
                   <span className="px-3 py-1 rounded-full bg-secondary/20 border border-secondary/30 text-[10px] text-[#06b6d4] uppercase tracking-widest font-bold font-mono">Phase 01</span>
@@ -1557,7 +1557,7 @@ function LandingPage() {
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
-                <img alt="Digital Echoes" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3z-TxQ61gKvuHRQtqBJakTl9qTYJYk8408rH1Xjjv1eTd3xi_0qqxFX8uMfkcBHD1gKkGajJkYSzPsLQcSMgDdMaQ2Pup83VX4Sq0Or0IrQTCZh21VxDvQntfLL5vqioA_rcHtrT18WTY18QQN5iTyxaIvNDul3KdiL_o41KHhdGwnJVX1tEoPAlA62veIaiSvbVg-3X-XdTcFeIFcaF1PYyttNooZKWywxF78I8xPX7CjiqVpR9WACtXfLyyh6v6SsGKn5fSaOEI" />
+                <img alt="Digital Echoes — Pattern Recognition" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" src="/phase02.png" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111319] to-transparent"></div>
                 <div className="absolute bottom-6 left-6">
                   <span className="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-[10px] text-primary uppercase tracking-widest font-bold font-mono">Phase 02</span>
@@ -1574,7 +1574,7 @@ function LandingPage() {
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
-                <img alt="Evolution" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOLw-Dvx6aiD4nGLuuxUsfeWqNC3a6I1IEwd9ljOgwKCVtiT-pDIVGSxcPTPXA0OTYWtsDIr6syR7QTvN6fziWXPnpovL5ykVNCO6vbOwyvMBaTbCWjgKeMpdBeFRet_PlG8j6J3mMT9kkbv4t70d02Ya6qx8pryfIZVJm8upFSioJ8xOXjEPZnUW-fE40V89vXcjzPinOBKDelg1mrVIXDG3UPDc96fUOpvPwtj78O4qckKZ4UVHNwOwdOrHenIsCQ-4pBwOvUsVa" />
+                <img alt="Evolution — Intelligence Synthesis" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" src="/phase03.png" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111319] to-transparent"></div>
                 <div className="absolute bottom-6 left-6">
                   <span className="px-3 py-1 rounded-full bg-tertiary/20 border border-tertiary/30 text-[10px] text-[#fbabff] uppercase tracking-widest font-bold font-mono">Phase 03</span>
