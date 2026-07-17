@@ -1163,11 +1163,8 @@ function LandingPage() {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const rotateX = (centerY - y) / 10;
-    const rotateY = (x - centerX) / 10;
-
     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-    card.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2}px 35px rgba(139, 92, 246, 0.15)`;
+    card.style.boxShadow = `${-rotateY * 2.5}px ${rotateX * 2.5}px 35px rgba(251, 171, 255, 0.28)`;
   };
 
   const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -1335,7 +1332,7 @@ function LandingPage() {
                     onClick={() => handleNavigationAction(tool.path, tool.id === "dashboard")}
                     onMouseMove={handleCardMouseMove}
                     onMouseLeave={handleCardMouseLeave}
-                    className={`p-6 rounded-xl border bg-white/5 cursor-pointer flex flex-col justify-between group transition-all duration-300 hover:scale-[1.03] ${tool.id === "dashboard" ? "border-primary/40 hover:border-primary/80 hover:shadow-[0_0_20px_rgba(139,92,246,0.15)]" : "border-white/5 hover:border-[#fbabff]/40 hover:shadow-[0_0_20px_rgba(251,171,255,0.1)]"}`}
+                    className={`p-6 rounded-xl border bg-white/5 cursor-pointer flex flex-col justify-between group transition-all duration-300 hover:scale-[1.03] shadow-[0_0_15px_rgba(251,171,255,0.06)] border-[#fbabff]/15 hover:border-[#fbabff]/60 hover:shadow-[0_0_25px_rgba(251,171,255,0.25)]`}
                   >
                     <div>
                       <div className="flex justify-between items-center mb-4">
@@ -1378,7 +1375,7 @@ function LandingPage() {
               {/* Feature 1 */}
               <div 
                 onClick={() => handleNavigationAction("/graph")}
-                className="p-8 rounded-2xl glass-premium border border-white/5 hover:border-primary/30 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
+                className="p-8 rounded-2xl glass-premium border border-[#fbabff]/15 shadow-[0_0_15px_rgba(251,171,255,0.05)] hover:border-[#fbabff]/50 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
@@ -1394,7 +1391,7 @@ function LandingPage() {
               {/* Feature 2 */}
               <div 
                 onClick={() => handleNavigationAction("/timeline")}
-                className="p-8 rounded-2xl glass-premium border border-white/5 hover:border-secondary/30 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
+                className="p-8 rounded-2xl glass-premium border border-[#fbabff]/15 shadow-[0_0_15px_rgba(251,171,255,0.05)] hover:border-[#fbabff]/50 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
@@ -1410,7 +1407,7 @@ function LandingPage() {
               {/* Feature 3 */}
               <div 
                 onClick={() => handleNavigationAction("/evidence")}
-                className="p-8 rounded-2xl glass-premium border border-white/5 hover:border-tertiary/30 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
+                className="p-8 rounded-2xl glass-premium border border-[#fbabff]/15 shadow-[0_0_15px_rgba(251,171,255,0.05)] hover:border-[#fbabff]/50 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
@@ -1426,7 +1423,7 @@ function LandingPage() {
               {/* Feature 4 */}
               <div 
                 onClick={() => handleNavigationAction("/cases")}
-                className="p-8 rounded-2xl glass-premium border border-white/5 hover:border-primary/30 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
+                className="p-8 rounded-2xl glass-premium border border-[#fbabff]/15 shadow-[0_0_15px_rgba(251,171,255,0.05)] hover:border-[#fbabff]/50 transition-all flex flex-col tilt-card cursor-pointer group hover:scale-[1.03]"
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
               >
