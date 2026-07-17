@@ -1,0 +1,128 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { FileDown, Printer, FileText } from "lucide-react";
+import { PageHeader } from "@/components/chimera/page-header";
+import { Button } from "@/components/ui/button";
+import { cases, timelineEvents, contradictions, entities } from "@/lib/mock-data";
+import { formatDate } from "@/lib/format";
+
+// Deterministic "prepared on" date for the demo report.
+const PREPARED_ON = "2026-07-17T00:00:00Z";
+
+export const Route = createFileRoute("/_authenticated/reports")({
+  head: () => ({
+    meta: [
+      { title: "Reports — Chimera" },
+      { name: "description", content: "Generate investigation reports with citations, timeline, and summaries." },
+    ],
+  }),
+  component: ReportsPage,
+});
+
+function ReportsPage() {
+  const c = cases[0]; // Meridian
+  return (
+    <div>
+      <PageHeader
+        eyebrow="Investigation report"
+        title={c.title}
+        description="Preview of the auto-generated executive report. Export to PDF or Markdown."
+        actions={
+          <>
+            <Button variant="outline" size="sm" className="h-8 gap-1.5">
+              <Printer className="h-3.5 w-3.5" /> Print
+            </Button>
+            <Button size="sm" className="h-8 gap-1.5">
+              <FileDown className="h-3.5 w-3.5" /> Export PDF
+            </Button>
+          </>
+        }
+      />
+      <div className="p-4 md:p-6">
+        <article className="mx-auto max-w-3xl rounded-xl border border-border/60 bg-card p-6 md:p-10">
+          <header className="border-b border-border/60 pb-6">
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Confidential · {c.code} · Prepared {formatDate(PREPARED_ON)}
+            </div>
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight">{c.title}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{c.description}</p>
+          </header>
+
+          <Section title="1. Executive summary">
+            Chimera ingested {c.evidenceCount} evidence items across banking, corporate registry, and
+            communication sources. AI extraction identified {c.entityCount} distinct entities and
+            constructed a timeline of {c.eventCount} events. {c.contradictionCount} possible
+            contradictions were flagged for human review. Nothing in this document constitutes a legal
+            determination.
+          </Section>
+
+          <Section title="2. Key entities">
+            <ul className="mt-2 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+              {entities.slice(0, 8).map((e) => (
+                <li key={e.id} className="flex items-center gap-2 rounded-md border border-border/60 bg-background/60 px-2.5 py-1.5 text-[12px]">
+                  <span className="font-mono text-[10px] uppercase text-muted-foreground">{e.kind}</span>
+                  <span className="truncate">{e.name}</span>
+                  <span className="ml-auto font-mono text-[10px] tabular-nums text-muted-foreground">
+                    {e.mentions}×
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Section>
+
+          <Section title="3. Timeline highlights">
+            <ol className="mt-2 space-y-2">
+              {timelineEvents.slice(0, 5).map((e) => (
+                <li key={e.id} className="text-[13px]">
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {formatDate(e.timestamp)} —{" "}
+                  </span>
+                  <span className="font-medium">{e.title}.</span>{" "}
+                  <span className="text-muted-foreground">{e.description}</span>
+                </li>
+              ))}
+            </ol>
+          </Section>
+
+          <Section title="4. Contradictions">
+            <ul className="mt-2 space-y-2">
+              {contradictions.map((cx) => (
+                <li key={cx.id} className="rounded-md border border-border/60 bg-background/60 p-3">
+                  <div className="text-[12px] font-semibold">
+                    {cx.title}{" "}
+                    <span className="font-mono text-[10px] font-normal uppercase text-muted-foreground">
+                      · {cx.severity} · conf {Math.round(cx.confidence * 100)}%
+                    </span>
+                  </div>
+                  <div className="mt-1 text-[12px] text-muted-foreground">{cx.description}</div>
+                </li>
+              ))}
+            </ul>
+          </Section>
+
+          <Section title="5. Appendix — evidence index">
+            <p className="mt-1 text-[12px] text-muted-foreground">
+              A full list of ingested evidence, extraction confidence, and source references is available
+              in the evidence library. This report cites {c.evidenceCount} items.
+            </p>
+          </Section>
+
+          <footer className="mt-8 border-t border-border/60 pt-4 text-[10px] text-muted-foreground">
+            Generated by Chimera · Evidence-grounded intelligence · Chimera makes no legal, guilt, or
+            identity determinations. Human review is required.
+          </footer>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-6">
+      <h2 className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        {title}
+      </h2>
+      <div className="mt-2 text-[13px] leading-relaxed">{children}</div>
+    </section>
+  );
+}

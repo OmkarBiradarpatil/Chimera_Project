@@ -1,0 +1,267 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "reactflow/dist/style.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Project Chimera — Enterprise AI Evidence Intelligence Platform
+ * Dark-first design system. All values use oklch. 8px spacing rhythm.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Dark theme — Chimera default */
+:root {
+  --radius: 0.625rem;
+
+  /* Base surfaces — 09090B / 111827 / 18181B / 27272A */
+  --background: oklch(0.145 0.005 260);
+  --foreground: oklch(0.985 0.003 260);
+  --surface: oklch(0.19 0.012 260);
+  --elevated: oklch(0.225 0.014 260);
+  --card: oklch(0.19 0.012 260);
+  --card-foreground: oklch(0.985 0.003 260);
+  --popover: oklch(0.19 0.012 260);
+  --popover-foreground: oklch(0.985 0.003 260);
+
+  /* Electric blue primary */
+  --primary: oklch(0.68 0.19 254);
+  --primary-foreground: oklch(0.145 0.005 260);
+
+  /* Indigo secondary */
+  --secondary: oklch(0.255 0.02 260);
+  --secondary-foreground: oklch(0.97 0.003 260);
+
+  --muted: oklch(0.24 0.014 260);
+  --muted-foreground: oklch(0.68 0.015 260);
+  --accent: oklch(0.26 0.02 260);
+  --accent-foreground: oklch(0.985 0.003 260);
+
+  /* Signal colors */
+  --destructive: oklch(0.68 0.2 15);
+  --destructive-foreground: oklch(0.99 0.003 260);
+  --success: oklch(0.72 0.16 160);
+  --warning: oklch(0.8 0.15 75);
+  --info: oklch(0.78 0.13 205);
+
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.68 0.19 254 / 60%);
+
+  --chart-1: oklch(0.68 0.19 254);
+  --chart-2: oklch(0.72 0.16 160);
+  --chart-3: oklch(0.75 0.17 285);
+  --chart-4: oklch(0.8 0.15 75);
+  --chart-5: oklch(0.78 0.13 205);
+
+  --sidebar: oklch(0.155 0.006 260);
+  --sidebar-foreground: oklch(0.9 0.005 260);
+  --sidebar-primary: oklch(0.68 0.19 254);
+  --sidebar-primary-foreground: oklch(0.145 0.005 260);
+  --sidebar-accent: oklch(0.23 0.014 260);
+  --sidebar-accent-foreground: oklch(0.985 0.003 260);
+  --sidebar-border: oklch(1 0 0 / 6%);
+  --sidebar-ring: oklch(0.68 0.19 254 / 60%);
+}
+
+/* Light theme — clean, enterprise, restrained */
+.light {
+  --background: oklch(0.99 0.002 260);
+  --foreground: oklch(0.18 0.02 260);
+  --surface: oklch(0.97 0.004 260);
+  --elevated: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 260);
+  --primary: oklch(0.55 0.2 254);
+  --primary-foreground: oklch(0.99 0.003 260);
+  --secondary: oklch(0.96 0.006 260);
+  --secondary-foreground: oklch(0.2 0.02 260);
+  --muted: oklch(0.96 0.006 260);
+  --muted-foreground: oklch(0.5 0.02 260);
+  --accent: oklch(0.95 0.01 254);
+  --accent-foreground: oklch(0.2 0.02 260);
+  --destructive: oklch(0.55 0.22 20);
+  --destructive-foreground: oklch(0.99 0.003 260);
+  --success: oklch(0.55 0.16 160);
+  --warning: oklch(0.7 0.16 75);
+  --info: oklch(0.6 0.14 205);
+  --border: oklch(0.2 0.02 260 / 10%);
+  --input: oklch(0.2 0.02 260 / 12%);
+  --ring: oklch(0.55 0.2 254 / 50%);
+  --sidebar: oklch(0.98 0.004 260);
+  --sidebar-foreground: oklch(0.22 0.02 260);
+  --sidebar-primary: oklch(0.55 0.2 254);
+  --sidebar-primary-foreground: oklch(0.99 0.003 260);
+  --sidebar-accent: oklch(0.94 0.008 260);
+  --sidebar-accent-foreground: oklch(0.2 0.02 260);
+  --sidebar-border: oklch(0.2 0.02 260 / 8%);
+  --sidebar-ring: oklch(0.55 0.2 254 / 50%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 35%, transparent);
+    color: var(--foreground);
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 12%, transparent);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--foreground) 22%, transparent);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--background) 55%, transparent);
+  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+
+@utility glow-primary {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+    0 8px 32px -8px color-mix(in oklab, var(--primary) 40%, transparent);
+}
+
+@utility ring-focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    color-mix(in oklab, var(--primary) 70%, var(--foreground)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* React Flow theming */
+.react-flow__background {
+  background: var(--background);
+}
+.react-flow__edge-path {
+  stroke: color-mix(in oklab, var(--foreground) 25%, transparent);
+  stroke-width: 1.5;
+}
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: var(--primary);
+}
+.react-flow__controls {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.react-flow__controls-button {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+.react-flow__controls-button:hover {
+  background: var(--accent);
+}
+.react-flow__attribution {
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
