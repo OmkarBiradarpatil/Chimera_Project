@@ -13,7 +13,16 @@ import {
   HelpCircle,
   Pin,
   HardDrive,
+  LogOut,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import {
   Sidebar,
   SidebarContent,
@@ -152,21 +161,63 @@ export function AppSidebar() {
               <span className="font-mono text-[10px] text-muted-foreground">42.1 / 100 GB</span>
             </div>
             <Progress value={42} className="h-1" />
-            <div className="flex items-center gap-2 rounded-md border border-sidebar-border bg-sidebar-accent/40 px-2 py-1.5">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary">
-                EM
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-medium">Elena Márquez</div>
-                <div className="truncate text-[10px] text-muted-foreground">Lead investigator</div>
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex w-full items-center gap-2 rounded-md border border-sidebar-border bg-sidebar-accent/40 px-2 py-1.5 text-left outline-none hover:bg-sidebar-accent transition-colors cursor-pointer">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary">
+                    EM
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-xs font-medium">Elena Márquez</div>
+                    <div className="truncate text-[10px] text-muted-foreground">Lead investigator</div>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56" side="top">
+                <DropdownMenuItem 
+                  onClick={async () => {
+                    try {
+                      await supabase.auth.signOut();
+                      toast.success("Signed out successfully");
+                      window.location.href = "/";
+                    } catch (e) {
+                      toast.error("Failed to sign out");
+                    }
+                  }}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ) : (
           <div className="flex justify-center py-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary">
-              EM
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary outline-none hover:ring-2 hover:ring-primary transition-all cursor-pointer">
+                  EM
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-56" side="right">
+                <DropdownMenuItem 
+                  onClick={async () => {
+                    try {
+                      await supabase.auth.signOut();
+                      toast.success("Signed out successfully");
+                      window.location.href = "/";
+                    } catch (e) {
+                      toast.error("Failed to sign out");
+                    }
+                  }}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         )}
       </SidebarFooter>

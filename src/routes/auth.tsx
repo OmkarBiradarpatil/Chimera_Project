@@ -93,44 +93,25 @@ function AuthPage() {
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-[420px]">
+      <div className="relative w-full max-w-[480px]">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_24px] shadow-primary/40">
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_24px] shadow-primary/40">
             <span className="font-mono text-sm font-bold">X</span>
           </div>
           <div>
-            <div className="font-semibold tracking-tight">Chimera</div>
+            <div className="font-semibold tracking-tight text-lg">Chimera</div>
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
               Evidence Intelligence
             </div>
           </div>
         </Link>
 
-        <div className="rounded-2xl border border-border/60 bg-card/80 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)] backdrop-blur">
-          <div className="mb-5">
-            <h1 className="text-lg font-semibold tracking-tight">Sign in to Chimera</h1>
-            <p className="mt-1 text-[12px] text-muted-foreground">
+        <div className="rounded-2xl border border-border/60 bg-card/80 p-8 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)] backdrop-blur">
+          <div className="mb-6">
+            <h1 className="text-xl font-semibold tracking-tight">Sign in to Chimera</h1>
+            <p className="mt-1.5 text-xs text-muted-foreground">
               Access your investigations, evidence, and AI analysis.
             </p>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="h-10 w-full gap-2 text-sm"
-            onClick={handleGoogle}
-            disabled={busy}
-          >
-            <GoogleIcon />
-            Continue with Google
-          </Button>
-
-          <div className="my-4 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              or
-            </span>
-            <div className="h-px flex-1 bg-border" />
           </div>
 
           <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
@@ -141,7 +122,7 @@ function AuthPage() {
 
             {(["signin", "signup"] as const).map((k) => (
               <TabsContent key={k} value={k} className="mt-4">
-                <form onSubmit={handleEmail} className="space-y-3">
+                <form onSubmit={handleEmail} className="space-y-4">
                   <div className="space-y-1.5">
                     <Label htmlFor={`email-${k}`} className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
                       Email
@@ -153,7 +134,7 @@ function AuthPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-10"
+                      className="h-11 text-sm px-4"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -168,10 +149,10 @@ function AuthPage() {
                       minLength={6}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="h-10"
+                      className="h-11 text-sm px-4"
                     />
                   </div>
-                  <Button type="submit" className="h-10 w-full gap-2" disabled={busy}>
+                  <Button type="submit" className="h-11 w-full gap-2 text-sm mt-2" disabled={busy}>
                     {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                     {k === "signin" ? "Sign in" : "Create account"}
                     <ArrowRight className="h-4 w-4" />

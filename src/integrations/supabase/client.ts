@@ -48,24 +48,75 @@ const dummySession = {
   user: dummyUser
 };
 
+const listeners = new Set<(event: string, session: any) => void>();
+
+const getDummySession = () => {
+  if (typeof window === 'undefined') return null;
+  const isAuthed = localStorage.getItem("chimera_dummy_session") === "true";
+  return isAuthed ? dummySession : null;
+};
+
 const dummyAuth = {
-  getUser: async () => ({ data: { user: dummyUser }, error: null }),
-  getSession: async () => ({ data: { session: dummySession }, error: null }),
+  getUser: async () => {
+    const session = getDummySession();
+    return { data: { user: session ? session.user : null }, error: null };
+  },
+  getSession: async () => {
+    const session = getDummySession();
+    return { data: { session }, error: null };
+  },
   onAuthStateChange: (callback: any) => {
+    listeners.add(callback);
+    const session = getDummySession();
     setTimeout(() => {
-      callback("SIGNED_IN", dummySession);
+      callback(session ? "SIGNED_IN" : "SIGNED_OUT", session);
     }, 0);
     return {
       data: {
         subscription: {
-          unsubscribe: () => {}
+          unsubscribe: () => {
+            listeners.delete(callback);
+          }
         }
       }
     };
   },
-  signInWithPassword: async () => ({ data: { user: dummyUser, session: dummySession }, error: null }),
-  signUp: async () => ({ data: { user: dummyUser, session: dummySession }, error: null }),
-  signOut: async () => ({ error: null }),
+  signInWithPassword: async (credentials: any) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("chimera_dummy_session", "true");
+      const email = credentials?.email || "dummy@example.com";
+      const user = { ...dummyUser, email };
+      const session = { ...dummySession, user };
+      listeners.forEach(cb => cb("SIGNED_IN", session));
+      return { data: { user, session }, error: null };
+    }
+    return { data: { user: null, session: null }, error: new Error("Window undefined") };
+  },
+  signUp: async (credentials: any) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("chimera_dummy_session", "true");
+      const email = credentials?.email || "dummy@example.com";
+      const user = { ...dummyUser, email };
+      const session = { ...dummySession, user };
+      listeners.forEach(cb => cb("SIGNED_IN", session));
+      return { data: { user, session }, error: null };
+    }
+    return { data: { user: null, session: null }, error: new Error("Window undefined") };
+  },
+  setSession: async (tokens: any) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("chimera_dummy_session", "true");
+      listeners.forEach(cb => cb("SIGNED_IN", dummySession));
+    }
+    return { data: { session: dummySession, user: dummyUser }, error: null };
+  },
+  signOut: async () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("chimera_dummy_session");
+      listeners.forEach(cb => cb("SIGNED_OUT", null));
+    }
+    return { error: null };
+  },
 };
 
 

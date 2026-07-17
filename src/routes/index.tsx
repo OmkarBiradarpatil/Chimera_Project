@@ -331,12 +331,16 @@ function LandingPage() {
 
   // Check auth
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setIsAuthenticated(true);
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session?.user);
     });
 
     // Initialize audio instance
     audioRef.current = new AudioEngine();
+
+    return () => {
+      data.subscription.unsubscribe();
+    };
   }, []);
 
   // Boot Timeline State Machine
@@ -887,7 +891,7 @@ function LandingPage() {
 
         let assembleScale = 0.01;
         if (stateVal.bootState === "core-forming") assembleScale = 0.6;
-        else if (stateVal.bootState !== "void" && stateVal.bootState !== "signal" && stateVal.bootState !== "grid" && stateVal.bootState !== "neural-activity") assembleScale = 1.0;
+        else if (stateVal.bootState !== "signal" && stateVal.bootState !== "grid" && stateVal.bootState !== "neural-activity") assembleScale = 1.0;
 
         if (stateVal.brainState === "excited") {
           rotationSpeed = 0.8;

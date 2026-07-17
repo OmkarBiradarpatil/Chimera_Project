@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/chimera/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -18,6 +20,17 @@ export const Route = createFileRoute("/_authenticated/settings")({
 });
 
 function SettingsPage() {
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Signed out successfully");
+      navigate({ to: "/" });
+    } catch (e) {
+      toast.error("Failed to sign out");
+    }
+  };
   return (
     <div>
       <PageHeader eyebrow="Preferences" title="Settings" description="Manage your workspace, profile, and integrations." />
@@ -41,6 +54,16 @@ function SettingsPage() {
             <Row title="Contradiction alerts" description="Real-time notifications for new contradictions.">
               <Switch defaultChecked />
             </Row>
+            <Separator />
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-[13px] font-medium text-destructive">Sign out</div>
+                <div className="text-[11px] text-muted-foreground">Sign out of your account on this device.</div>
+              </div>
+              <Button variant="destructive" size="sm" onClick={handleSignOut}>
+                Sign out
+              </Button>
+            </div>
           </TabsContent>
 
           <TabsContent value="workspace" className="mt-4 space-y-6 rounded-xl border border-border/60 bg-card p-5">
