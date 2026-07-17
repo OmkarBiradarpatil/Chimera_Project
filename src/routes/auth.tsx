@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,20 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
+
+interface Bubble2D {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  alpha: number;
+  parallax: number;
+  wobbleSpeed: number;
+  wobbleAmount: number;
+  wobbleOffset: number;
+  color: string;
+}
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -30,10 +44,170 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // Background bubbles animation engine
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    let isMobile = width < 768;
+
+    let bubbles: Bubble2D[] = [];
+    let time = 0;
+
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    let targetMouseX = width / 2;
+    let targetMouseY = height / 2;
+
+    const initEngine = () => {
+      bubbles = [];
+      isMobile = window.innerWidth < 768;
+
+      const bubbleCount = isMobile ? 12 : 30;
+      for (let i = 0; i < bubbleCount; i++) {
+        bubbles.push({
+          x: Math.random() * width,
+          y: Math.random() * height + height * 0.5, // Distribute across vertical space and below screen
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: -(Math.random() * 0.35 + 0.15),
+          radius: Math.random() * 18 + 6,
+          alpha: Math.random() * 0.16 + 0.06, // Soft transparent alphas
+          parallax: Math.random() * 0.05 + 0.02,
+          wobbleSpeed: Math.random() * 0.015 + 0.008,
+          wobbleAmount: Math.random() * 3 + 1.5,
+          wobbleOffset: Math.random() * Math.PI * 2,
+          color: Math.random() < 0.4 ? "#06b6d4" : Math.random() < 0.7 ? "#8b5cf6" : "#fbabff"
+        });
+      }
+    };
+
+    initEngine();
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initEngine();
+    };
+    window.addEventListener("resize", handleResize);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetMouseX = e.clientX;
+      targetMouseY = e.clientY;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
+    let animationFrameId: number;
+    let isVisible = true;
+
+    const handleVisibility = () => {
+      isVisible = document.visibilityState === "visible";
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    const drawLoop = () => {
+      if (!isVisible) {
+        animationFrameId = requestAnimationFrame(drawLoop);
+        return;
+      }
+
+      time += 0.004;
+
+      // Clear with very slight transparency to prevent trails
+      ctx.clearRect(0, 0, width, height);
+
+      mouseX += (targetMouseX - mouseX) * 0.06;
+      mouseY += (targetMouseY - mouseY) * 0.06;
+
+      // Draw Bubbles
+      bubbles.forEach(b => {
+        b.y += b.vy;
+        const wobble = Math.sin(time * 100 * b.wobbleSpeed + b.wobbleOffset) * b.wobbleAmount * 0.05;
+        b.x += b.vx + wobble;
+
+        // Reset bubble when it floats off screen top
+        if (b.y < -b.radius * 2) {
+          b.y = height + b.radius * 2;
+          b.x = Math.random() * width;
+        }
+        if (b.x < -b.radius * 2) b.x = width + b.radius * 2;
+        if (b.x > width + b.radius * 2) b.x = -b.radius * 2;
+
+        const bx = b.x + (mouseX - width / 2) * b.parallax;
+        const by = b.y + (mouseY - height / 2) * b.parallax;
+
+        // Mouse repulsion
+        const dx = bx - mouseX;
+        const dy = by - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        let pushX = 0;
+        let pushY = 0;
+        if (dist < 150) {
+          const force = (150 - dist) / 150;
+          pushX = (dx / (dist || 1)) * force * 2.5;
+          pushY = (dy / (dist || 1)) * force * 2.5;
+        }
+
+        const finalX = bx + pushX;
+        const finalY = by + pushY;
+
+        ctx.save();
+        ctx.globalAlpha = b.alpha;
+        ctx.lineWidth = 1.0;
+
+        // Outline stroke color (soft cyan/purple/pink)
+        ctx.strokeStyle = b.color;
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, b.radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Shiny radial reflection gradient
+        const radGrad = ctx.createRadialGradient(
+          finalX - b.radius * 0.3,
+          finalY - b.radius * 0.3,
+          b.radius * 0.05,
+          finalX,
+          finalY,
+          b.radius
+        );
+        radGrad.addColorStop(0, "rgba(255, 255, 255, 0.12)");
+        radGrad.addColorStop(0.5, "rgba(255, 255, 255, 0.01)");
+        radGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = radGrad;
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, b.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Bubble highlight reflection glint
+        ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+        ctx.beginPath();
+        ctx.arc(finalX - b.radius * 0.35, finalY - b.radius * 0.35, b.radius * 0.12, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      });
+
+      animationFrameId = requestAnimationFrame(drawLoop);
+    };
+
+    drawLoop();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event) => {
@@ -85,15 +259,18 @@ function AuthPage() {
   };
 
   return (
-    <div className="relative flex min-h-dvh items-center justify-center bg-background px-4 py-8 text-foreground">
+    <div className="relative flex min-h-dvh items-center justify-center bg-background px-4 py-8 text-foreground overflow-hidden">
+      {/* Dynamic Transparent Canvas Bubbles Background */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
+
       {/* Ambient background */}
-      <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 grid-bg opacity-40 z-0" aria-hidden="true" />
       <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[120px]"
+        className="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[120px] z-0"
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-[480px]">
+      <div className="relative w-full max-w-[480px] z-10">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_24px] shadow-primary/40">
             <span className="font-mono text-sm font-bold">X</span>

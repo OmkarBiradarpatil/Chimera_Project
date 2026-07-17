@@ -1163,6 +1163,9 @@ function LandingPage() {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
+    const rotateX = (centerY - y) / 10;
+    const rotateY = (x - centerX) / 10;
+
     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
     card.style.boxShadow = `${-rotateY * 2.5}px ${rotateX * 2.5}px 35px rgba(251, 171, 255, 0.28)`;
   };
